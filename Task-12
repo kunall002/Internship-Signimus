@@ -1,0 +1,79 @@
+1.Write a program to:
+Handle division by zero using try-catch.Open and close resources in the finally block.
+Create a custom exception for invalid age input (e.g., age less than 0) in an AgeValidator class.
+Demonstrate the use of throws in a method that reads a file.
+
+import java.io.*;
+
+// Custom exception for invalid age
+class InvalidAgeException extends Exception {
+    public InvalidAgeException(String message) {
+        super(message);
+    }
+}
+
+class AgeValidator {
+    public static void validateAge(int age) throws InvalidAgeException {
+        if (age < 0) {
+            throw new InvalidAgeException("Age cannot be negative.");
+        }
+        System.out.println("Valid age: " + age);
+    }
+}
+
+public class ExceptionHandlingDemo {
+    public static void readFile(String filename) throws IOException {
+        BufferedReader fileReader = new BufferedReader(new FileReader(filename));
+        try {
+            System.out.println("File content: " + fileReader.readLine());
+        } finally {
+            fileReader.close();
+            System.out.println("File closed successfully.");
+        }
+    }
+    
+    public static void main(String[] args) {
+        BufferedReader reader = null;
+        
+        try {
+            reader = new BufferedReader(new InputStreamReader(System.in));
+            
+            // Division by zero handling
+            System.out.print("Enter numerator: ");
+            int numerator = Integer.parseInt(reader.readLine());
+            System.out.print("Enter denominator: ");
+            int denominator = Integer.parseInt(reader.readLine());
+            
+            int result = numerator / denominator; // May throw ArithmeticException
+            System.out.println("Result: " + result);
+            
+            // Age validation
+            System.out.print("Enter age: ");
+            int age = Integer.parseInt(reader.readLine());
+            AgeValidator.validateAge(age);
+            
+            // File reading demonstration
+            System.out.print("Enter filename to read: ");
+            String filename = reader.readLine();
+            readFile(filename);
+            
+        } catch (ArithmeticException e) { // Unchecked Exception
+            System.out.println("Error: Division by zero is not allowed.");
+        } catch (IOException e) { // Checked Exception
+            System.out.println("Error: An input error occurred.");
+        } catch (NumberFormatException e) { // Unchecked Exception
+            System.out.println("Error: Invalid number format.");
+        } catch (InvalidAgeException e) { // Checked Exception
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close(); // Closing the resource in finally block
+                    System.out.println("Resource closed successfully.");
+                }
+            } catch (IOException e) {
+                System.out.println("Error closing resource.");
+            }
+        }
+    }
+}

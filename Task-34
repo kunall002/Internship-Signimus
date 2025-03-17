@@ -1,0 +1,45 @@
+task 34: 
+Convert a lambda expression into a method reference.
+import java.util.function.Function;
+
+public class LambdaToMethodReference {
+    // A static method to be used as a method reference
+    public static String toUpperCase(String str) {
+        return str.toUpperCase();
+    }
+
+    public static void main(String[] args) {
+        // Using a lambda expression
+        Function<String, String> lambdaFunction = s -> toUpperCase(s);
+
+        // Converting to a method reference
+        Function<String, String> methodRefFunction = LambdaToMethodReference::toUpperCase;
+
+        // Testing
+        System.out.println(lambdaFunction.apply("hello"));  // Output: HELLO
+        System.out.println(methodRefFunction.apply("world"));  // Output: WORLD
+    }
+}
+
+Create an interface with a default method and override it in a class
+// Step 1: Create an interface with a default method
+interface MyInterface {
+    default void show() {
+        System.out.println("Default method in interface");
+    }
+}
+
+// Step 2: Implement the interface and override the default method with a different implementation
+class MyClass implements MyInterface {
+    @Override
+    public void show() {
+        System.out.println("Overridden method in MyClass");
+    }
+}
+
+public class DefaultMethodOverrideExample {
+    public static void main(String[] args) {
+        MyInterface obj = new MyClass();
+        obj.show();  // Output: Overridden method in MyClass
+    }
+}

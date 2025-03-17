@@ -1,0 +1,164 @@
+task - 14
+1.Create a file reader utility tool and upload it to GitHub. Share how this helped you understand Java's IO Streams.
+import java.io.*;
+
+public class FileReaderUtility {
+    public static void main(String[] args) {
+        if (args.length < 1) {
+            System.out.println("Usage: java FileReaderUtility <file-path>");
+            return;
+        }
+        
+        String filePath = args[0];
+        readFile(filePath);
+    }
+    
+    public static void readFile(String filePath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + filePath);
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + filePath);
+        }
+    }
+}
+
+2.Create a Student class with fields name and marks. Serialize and deserialize an object of this class to and from a file.
+import java.io.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', marks=" + marks + "}";
+    }
+}
+
+public class FileReaderUtility {
+    public static void main(String[] args) {
+        String filePath = "student.ser";
+
+        // Serialize
+        Student student = new Student("John Doe", 85);
+        serializeStudent(student, filePath);
+
+        // Deserialize
+        Student deserializedStudent = deserializeStudent(filePath);
+        System.out.println("Deserialized Student: " + deserializedStudent);
+    }
+
+    public static void serializeStudent(Student student, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(student);
+            System.out.println("Student serialized successfully.");
+        } catch (IOException e) {
+            System.err.println("Error serializing student: " + e.getMessage());
+        }
+    }
+
+    public static Student deserializeStudent(String filePath) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            return (Student) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error deserializing student: " + e.getMessage());
+            return null;
+        }
+    }
+}
+
+3.Write a program to count the number of words in a text file.
+import java.io.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', marks=" + marks + "}";
+    }
+}
+
+public class FileReaderUtility {
+    public static void main(String[] args) {
+        String filePath = "student.ser";
+
+        // Serialize
+        Student student = new Student("John Doe", 85);
+        serializeStudent(student, filePath);
+
+        // Deserialize
+        Student deserializedStudent = deserializeStudent(filePath);
+        System.out.println("Deserialized Student: " + deserializedStudent);
+
+        // Count words in a file
+        String textFilePath = "sample.txt";
+        int wordCount = countWordsInFile(textFilePath);
+        System.out.println("Word Count in file: " + wordCount);
+    }
+
+    public static void serializeStudent(Student student, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(student);
+            System.out.println("Student serialized successfully.");
+        } catch (IOException e) {
+            System.err.println("Error serializing student: " + e.getMessage());
+        }
+    }
+
+    public static Student deserializeStudent(String filePath) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            return (Student) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error deserializing student: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static int countWordsInFile(String filePath) {
+        int wordCount = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                wordCount += line.split("\\s+").length;
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return wordCount;
+    }
+}

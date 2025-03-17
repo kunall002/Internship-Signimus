@@ -1,0 +1,56 @@
+Hospital class and patient class use priorityQueue and according to their priority you have attend the patient.
+import java.util.PriorityQueue;
+
+class Patient implements Comparable<Patient> {
+    String name;
+    int priority; // Lower number = Higher priority
+
+    public Patient(String name, int priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+
+    @Override
+    public int compareTo(Patient other) {
+        return Integer.compare(this.priority, other.priority);
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{name='" + name + "', priority=" + priority + "}";
+    }
+}
+
+
+class Hospital {
+    private PriorityQueue<Patient> patientQueue = new PriorityQueue<>();
+
+    public void addPatient(String name, int priority) {
+        patientQueue.add(new Patient(name, priority));
+    }
+
+    public void attendPatient() {
+        if (!patientQueue.isEmpty()) {
+            Patient p = patientQueue.poll();
+            System.out.println("Attending: " + p);
+        } else {
+            System.out.println("No patients in queue.");
+        }
+    }
+}
+
+
+public class HospitalManagement {
+    public static void main(String[] args) {
+        Hospital hospital = new Hospital();
+        hospital.addPatient("John", 2);
+        hospital.addPatient("Alice", 1);
+        hospital.addPatient("Bob", 3);
+        
+        System.out.println("Attending Patients:");
+        hospital.attendPatient(); // Alice (priority 1)
+        hospital.attendPatient(); // John (priority 2)
+        hospital.attendPatient(); // Bob (priority 3)
+        hospital.attendPatient(); // No patients
+    }
+}

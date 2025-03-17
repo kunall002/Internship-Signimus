@@ -1,0 +1,28 @@
+task 31: 
+create lambda expression using Runnable interface.
+public class LambdaRunnableExample {
+    public static void main(String[] args) {
+        // Using a lambda expression to implement Runnable
+        Runnable runnable = () -> {
+            System.out.println("Running in a separate thread using Lambda!");
+        };
+
+        // Creating a thread and passing the lambda-based Runnable
+        Thread thread = new Thread(runnable);
+        thread.start();
+    }
+}
+
+2.Check for Even Numbers with Lambda Expression.
+import java.util.function.Predicate;
+
+public class EvenNumberCheck {
+    public static void main(String[] args) {
+        // Lambda expression using Predicate to check even numbers
+        Predicate<Integer> isEven = num -> num % 2 == 0;
+
+        // Test cases
+        System.out.println(isEven.test(10)); // true
+        System.out.println(isEven.test(15)); // false
+    }
+}

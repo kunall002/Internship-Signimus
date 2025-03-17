@@ -1,0 +1,48 @@
+Task 35: 
+Implement a method that returns an Optional object to avoid NullPointerException.
+import java.util.Optional;
+
+public class OptionalExample {
+
+    // Method that returns an Optional to handle null values safely
+    public static Optional<String> getUserById(int id) {
+        // Simulating a scenario where user retrieval may return null
+        String user = (id == 1) ? "John Doe" : null;
+        
+        // Wrapping the result in Optional
+        return Optional.ofNullable(user);
+    }
+
+    public static void main(String[] args) {
+        int userId = 2; // Change this to 1 to see a non-empty Optional
+        
+        // Get user and handle the Optional safely
+        Optional<String> userOptional = getUserById(userId);
+        
+        // Using ifPresentOrElse to handle both cases
+        userOptional.ifPresentOrElse(
+            user -> System.out.println("User found: " + user),
+            () -> System.out.println("User not found")
+        );
+
+        // Using orElse to provide a default value
+        String userName = userOptional.orElse("Default User");
+        System.out.println("Retrieved User: " + userName);
+    }
+}
+
+Use Java 8 Date API to get the current date and time and format it in "dd-MM-yyyy" format.
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
+public class DateTimeExample {
+    public static void main(String[] args) {
+        LocalDate currentDate = LocalDate.now();
+        System.out.println("Current Date: " + currentDate);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        String formattedDate = currentDate.for
+
+ 

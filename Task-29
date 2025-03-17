@@ -1,0 +1,128 @@
+task - 29
+Create a JDBC program to insert, update, delete, and retrieve student records from a MySQL database.
+import java.sql.*;
+import java.util.Scanner;
+
+public class StudentJDBC {
+    public static void main(String[] args) {
+        String url = "jdbc:mysql://localhost:3306/studentdb";
+        String user = "root";
+        String password = "password";
+        
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             Scanner scanner = new Scanner(System.in)) {
+            
+            while (true) {
+                System.out.println("Choose an operation:");
+                System.out.println("1. Insert Student");
+                System.out.println("2. Update Student");
+                System.out.println("3. Delete Student");
+                System.out.println("4. Retrieve Students");
+                System.out.println("5. Exit");
+                int choice = scanner.nextInt();
+                
+                switch (choice) {
+                    case 1:
+                        System.out.print("Enter Student ID: ");
+                        int id = scanner.nextInt();
+                        System.out.print("Enter Student Name: ");
+                        String name = scanner.next();
+                        System.out.print("Enter Student Age: ");
+                        int age = scanner.nextInt();
+                        String insertQuery = "INSERT INTO students (id, name, age) VALUES (?, ?, ?)";
+                        try (PreparedStatement pstmt = conn.prepareStatement(insertQuery)) {
+                            pstmt.setInt(1, id);
+                            pstmt.setString(2, name);
+                            pstmt.setInt(3, age);
+                            pstmt.executeUpdate();
+                            System.out.println("Student inserted successfully.");
+                        }
+                        break;
+                    case 2:
+                        System.out.print("Enter Student ID to update: ");
+                        int updateId = scanner.nextInt();
+                        System.out.print("Enter new Student Name: ");
+                        String newName = scanner.next();
+                        System.out.print("Enter new Student Age: ");
+                        int newAge = scanner.nextInt();
+                        String updateQuery = "UPDATE students SET name = ?, age = ? WHERE id = ?";
+                        try (PreparedStatement pstmt = conn.prepareStatement(updateQuery)) {
+                            pstmt.setString(1, newName);
+                            pstmt.setInt(2, newAge);
+                            pstmt.setInt(3, updateId);
+                            pstmt.executeUpdate();
+                            System.out.println("Student updated successfully.");
+                        }
+                        break;
+                    case 3:
+                        System.out.print("Enter Student ID to delete: ");
+                        int deleteId = scanner.nextInt();
+                        String deleteQuery = "DELETE FROM students WHERE id = ?";
+                        try (PreparedStatement pstmt = conn.prepareStatement(deleteQuery)) {
+                            pstmt.setInt(1, deleteId);
+                            pstmt.executeUpdate();
+                            System.out.println("Student deleted successfully.");
+                        }
+                        break;
+                    case 4:
+                        String selectQuery = "SELECT * FROM students";
+                        try (Statement stmt = conn.createStatement();
+                             ResultSet rs = stmt.executeQuery(selectQuery)) {
+                            System.out.println("ID\tName\tAge");
+                            while (rs.next()) {
+                                System.out.println(rs.getInt("id") + "\t" + rs.getString("name") + "\t" + rs.getInt("age"));
+                            }
+                        }
+                        break;
+                    case 5:
+                        System.out.println("Exiting...");
+                        return;
+                    default:
+                        System.out.println("Invalid choice, try again.");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+Call a stored procedure using CallableStatement to retrieve employee details.
+import java.sql.*;
+
+public class CallableStatementExample {
+    public static void main(String[] args) {
+        // Database connection details
+        String url = "jdbc:mysql://localhost:3306/your_database";
+        String user = "your_username";
+        String password = "your_password";
+
+        // Define the stored procedure call
+        String procedureCall = "{CALL GetEmployeeDetails(?)}";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             CallableStatement cstmt = conn.prepareCall(procedureCall)) {
+
+            // Set input parameter (Employee ID)
+            cstmt.setInt(1, 101);
+
+            // Execute the stored procedure
+            ResultSet rs = cstmt.executeQuery();
+
+            // Process the result set
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String department = rs.getString("department");
+                double salary = rs.getDouble("salary");
+
+                System.out.println("ID: " + id);
+                System.out.println("Name: " + name);
+                System.out.println("Department: " + department);
+                System.out.println("Salary: " + salary);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

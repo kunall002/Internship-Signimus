@@ -1,0 +1,78 @@
+3.Create a mini-project integrating all OOP concepts an employee management system with multiple classes for Employee, Manager, and Intern.
+abstract class Employee {
+    private String name;
+    private int id;
+    private double salary;
+
+    public Employee(String name, int id, double salary) {
+        this.name = name;
+        this.id = id;
+        this.salary = salary;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public abstract void work();
+}
+
+class Manager extends Employee {
+    private String department;
+
+    public Manager(String name, int id, double salary, String department) {
+        super(name, id, salary);
+        this.department = department;
+    }
+
+    public String getDepartment() {
+        return department;
+    }
+
+    @Override
+    public void work() {
+        System.out.println("Manager " + getName() + " is managing the " + department + " department.");
+    }
+}
+
+class Intern extends Employee {
+    private String mentor;
+
+    public Intern(String name, int id, double salary, String mentor) {
+        super(name, id, salary);
+        this.mentor = mentor;
+    }
+
+    public String getMentor() {
+        return mentor;
+    }
+
+    @Override
+    public void work() {
+        System.out.println("Intern " + getName() + " is learning under the guidance of " + mentor + ".");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Employee manager = new Manager("Alice", 101, 90000, "IT");
+        Employee intern = new Intern("Bob", 201, 20000, "Alice");
+
+        System.out.println("Employee Details:");
+        System.out.println("Name: " + manager.getName() + ", ID: " + manager.getId() + ", Salary: " + manager.getSalary());
+        manager.work();
+
+        System.out.println("Name: " + intern.getName() + ", ID: " + intern.getId() + ", Salary: " + intern.getSalary());
+        intern.work();
+    }
+}
+
+

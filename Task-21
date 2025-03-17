@@ -1,0 +1,116 @@
+task-21
+Implement a method that calculates the average of an arbitrary number of double values using varargs.
+public class AverageCalculator {
+    public static double calculateAverage(double... numbers) {
+        if (numbers.length == 0) {
+            throw new IllegalArgumentException("At least one number is required");
+        }
+        double sum = 0;
+        for (double num : numbers) {
+            sum += num;
+        }
+        return sum / numbers.length;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(calculateAverage(4.5, 3.2, 5.8)); // Example usage
+    }
+}
+
+Two Sum (Easy): LeetCode Problem #1
+import java.util.HashMap;
+import java.util.Map;
+
+public class TwoSum {
+    public static int[] twoSum(int[] nums, int target) {
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            int complement = target - nums[i];
+            if (map.containsKey(complement)) {
+                return new int[]{map.get(complement), i};
+            }
+            map.put(nums[i], i);
+        }
+        return new int[]{-1, -1}; // No solution found
+    }
+}
+
+Valid Parentheses (Easy): LeetCode Problem #20
+import java.util.Stack;
+
+public class ValidParentheses {
+    public static boolean isValid(String s) {
+        Stack<Character> stack = new Stack<>();
+        for (char ch : s.toCharArray()) {
+            if (ch == '(' || ch == '{' || ch == '[') {
+                stack.push(ch);
+            } else {
+                if (stack.isEmpty()) return false;
+                char open = stack.pop();
+                if ((ch == ')' && open != '(') || 
+                    (ch == '}' && open != '{') || 
+                    (ch == ']' && open != '[')) {
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+}
+
+Reverse Linked List (Easy): LeetCode Problem #206
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+public class ReverseLinkedList {
+    public static ListNode reverseList(ListNode head) {
+        ListNode prev = null;
+        ListNode curr = head;
+        while (curr != null) {
+            ListNode nextNode = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = nextNode;
+        }
+        return prev;
+    }
+}
+
+Palindrome Number (Easy): LeetCode Problem #9
+public class PalindromeNumber {
+    public static boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) return false;
+        int reversed = 0;
+        int original = x;
+        while (x > 0) {
+            reversed = reversed * 10 + x % 10;
+            x /= 10;
+        }
+        return original == reversed;
+    }
+}
+
+Merge Two Sorted Lists (Easy): LeetCode Problem #21
+class ListNode {
+    int val;
+    ListNode next;
+    ListNode(int val) { this.val = val; }
+}
+
+public class MergeTwoSortedLists {
+    public static ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if (l1 == null) return l2;
+        if (l2 == null) return l1;
+        
+        if (l1.val < l2.val) {
+            l1.next = mergeTwoLists(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = mergeTwoLists(l1, l2.next);
+            return l2;
+        }
+    }
+}

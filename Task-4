@@ -1,0 +1,69 @@
+Task-4:
+Create a BankAccount class with private fields like accountNumber, accountHolder, and balance.
+Implement getters and setters for these fields.
+Write a program to deposit and withdraw money using methods in the BankAccount class.
+public class BankAccount {
+    private String accountNumber;
+    private String accountHolder;
+    private double balance;
+
+    public BankAccount(String accountNumber, String accountHolder, double initialBalance) {
+        this.accountNumber = accountNumber;
+        this.accountHolder = accountHolder;
+        this.balance = initialBalance;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getAccountHolder() {
+        return accountHolder;
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public void setAccountHolder(String accountHolder) {
+        this.accountHolder = accountHolder;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) {
+            balance += amount;
+            System.out.println("Deposited: " + amount);
+        } else {
+            System.out.println("Invalid deposit amount!");
+        }
+    }
+
+    public void withdraw(double amount) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            System.out.println("Withdrawn: " + amount);
+        } else {
+            System.out.println("Insufficient balance or invalid amount!");
+        }
+    }
+
+    public static void main(String[] args) {
+        BankAccount account = new BankAccount("1234567890", "John Doe", 5000);
+
+        account.deposit(2000);
+        System.out.println("Current Balance: " + account.getBalance());
+
+        account.withdraw(1500);
+        System.out.println("Current Balance: " + account.getBalance());
+
+        account.withdraw(6000);
+    }
+}

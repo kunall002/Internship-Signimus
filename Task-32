@@ -1,0 +1,57 @@
+task 32: 
+Given a list of integers, use Predicate<Integer> and a lambda expression to filter out all numbers greater than 10.
+Given a list of strings, use Function<String, String> and a lambda expression to convert each string to uppercase.
+Given a list of strings, use Consumer<String> and a lambda expression to print each string in uppercase to the console.
+sort a list of Person objects based on the second character of their names. Using lambda expression using comparator.
+
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collectors;
+
+class Person {
+    String name;
+
+    Person(String name) {
+        this.name = name;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+}
+
+public class LambdaExample {
+    public static void main(String[] args) {
+        // 1. Filtering numbers greater than 10
+        List<Integer> numbers = Arrays.asList(5, 12, 8, 20, 3, 15);
+        Predicate<Integer> filterGreaterThan10 = num -> num > 10;
+        List<Integer> filteredNumbers = numbers.stream()
+                                               .filter(filterGreaterThan10.negate()) // Keep numbers ≤ 10
+                                               .collect(Collectors.toList());
+        System.out.println("Numbers ≤ 10: " + filteredNumbers);
+
+        // 2. Converting strings to uppercase
+        List<String> words = Arrays.asList("hello", "world", "java", "lambda");
+        Function<String, String> toUpperCase = String::toUpperCase;
+        List<String> upperCaseWords = words.stream()
+                                           .map(toUpperCase)
+                                           .collect(Collectors.toList());
+        System.out.println("Uppercase Words: " + upperCaseWords);
+
+        // 3. Printing strings in uppercase
+        Consumer<String> printUpperCase = word -> System.out.println(word.toUpperCase());
+        words.forEach(printUpperCase);
+
+        // 4. Sorting list of Person objects based on the second character of their name
+        List<Person> people = Arrays.asList(new Person("Alice"), new Person("Bob"), new Person("Charlie"), new Person("David"));
+        Comparator<Person> secondCharComparator = Comparator.comparing(person -> person.getName().charAt(1));
+        people.sort(secondCharComparator);
+
+        System.out.println("Sorted People: " + people);
+    }
+}

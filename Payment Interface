@@ -1,0 +1,42 @@
+2.Create a Payment interface with methods pay() and refund() and implement it in CreditCardPayment and PayPalPayment classes.
+interface Payment {
+    void pay(double amount);
+    void refund(double amount);
+}
+
+class CreditCardPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " using Credit Card.");
+    }
+
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded " + amount + " to Credit Card.");
+    }
+}
+
+class PayPalPayment implements Payment {
+    @Override
+    public void pay(double amount) {
+        System.out.println("Paid " + amount + " using PayPal.");
+    }
+
+    @Override
+    public void refund(double amount) {
+        System.out.println("Refunded " + amount + " to PayPal.");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Payment creditCard = new CreditCardPayment();
+        Payment payPal = new PayPalPayment();
+
+        creditCard.pay(200);
+        creditCard.refund(50);
+
+        payPal.pay(150);
+        payPal.refund(30);
+    }
+}

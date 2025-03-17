@@ -1,0 +1,156 @@
+task - 24
+Create a list of Student objects with sample data.
+Use Collections.sort() to sort the list:
+Once using the natural ordering (based on name).
+Once using the AgeComparator.
+Once using the RollNumberComparator.
+Print the sorted lists to verify the correctness of the sorting.
+import java.util.*;
+class Student implements Comparable<Student> {
+    String name;
+    int age;
+    int rollNumber;
+
+    public Student(String name, int age, int rollNumber) {
+        this.name = name;
+        this.age = age;
+        this.rollNumber = rollNumber;
+    }
+
+    // Natural order sorting by name
+    @Override
+    public int compareTo(Student other) {
+        return this.name.compareTo(other.name);
+    }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + ", Age: " + age + ", Roll No: " + rollNumber;
+    }
+}
+
+// Comparator to sort by age
+class AgeComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.age, s2.age);
+    }
+}
+
+// Comparator to sort by roll number
+class RollNumberComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Integer.compare(s1.rollNumber, s2.rollNumber);
+    }
+}
+
+// Main class
+public class StudentSorting {
+    public static void main(String[] args) {
+        List<Student> students = new ArrayList<>();
+        students.add(new Student("Arjun", 22, 103));
+        students.add(new Student("Rohan", 20, 101));
+        students.add(new Student("Aiden", 25, 105));
+        students.add(new Student("Sophia", 23, 102));
+
+        // Sorting using natural order (by name)
+        Collections.sort(students);
+        System.out.println("Sorted by Name (Natural Order):");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+
+        // Sorting using AgeComparator
+        students.sort(new AgeComparator());
+        System.out.println("\nSorted by Age:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+
+        // Sorting using RollNumberComparator
+        students.sort(new RollNumberComparator());
+        System.out.println("\nSorted by Roll Number:");
+        for (Student s : students) {
+            System.out.println(s);
+        }
+    }
+}
+2.Create a Java program where two threads run simultaneously, one printing even numbers and the other printing odd numbers.
+class SharedPrinter {
+    private boolean isOdd = true;
+
+    public synchronized void printOdd(int number) {
+        while (!isOdd) { 
+            try {
+                wait(); // Wait until it's time to print odd
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println("Odd: " + number);
+        isOdd = false; 
+        notify(); 
+    }
+
+    public synchronized void printEven(int number) {
+        while (isOdd) { 
+            try {
+                wait(); // Wait until it's time to print even
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        System.out.println("Even: " + number);
+        isOdd = true;
+        notify(); 
+    }
+}
+
+class OddThread extends Thread {
+    private final SharedPrinter printer;
+    private final int limit;
+
+    public OddThread(SharedPrinter printer, int limit) {
+        this.printer = printer;
+        this.limit = limit;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 1; i <= limit; i += 2) {
+            printer.printOdd(i);
+        }
+    }
+}
+
+class EvenThread extends Thread {
+    private final SharedPrinter printer;
+    private final int limit;
+
+    public EvenThread(SharedPrinter printer, int limit) {
+        this.printer = printer;
+        this.limit = limit;
+    }
+
+    @Override
+    public void run() {
+        for (int i = 2; i <= limit; i += 2) {
+            printer.printEven(i);
+        }
+    }
+}
+
+public class EvenOddThreads {
+    public static void main(String[] args) {
+        int limit = 10; 
+        SharedPrinter printer = new SharedPrinter();
+
+        OddThread oddThread = new OddThread(printer, limit);
+        EvenThread evenThread = new EvenThread(printer, limit);
+
+        oddThread.start();
+        evenThread.start();
+    }
+}
+

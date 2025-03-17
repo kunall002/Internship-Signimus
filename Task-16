@@ -1,0 +1,136 @@
+task - 16
+1.Sort an array of integers using bubble sort.
+public class BubbleSort {
+    public static void bubbleSort(int[] arr) {
+        int n = arr.length;
+        boolean swapped;
+        for (int i = 0; i < n - 1; i++) {
+            swapped = false;
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    // Swap arr[j] and arr[j+1]
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            // If no two elements were swapped in the inner loop, the array is sorted
+            if (!swapped) break;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+        bubbleSort(arr);
+        System.out.print("Sorted array using Bubble Sort: ");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+
+2.Sort an array of integers using selection sort.
+public class SelectionSort {
+    public static void selectionSort(int[] arr) {
+        int n = arr.length;
+
+        for (int i = 0; i < n - 1; i++) {
+            int minIndex = i; // Assume the minimum is at the current index
+            for (int j = i + 1; j < n; j++) {
+                if (arr[j] < arr[minIndex]) {
+                    minIndex = j; // Update index of the minimum element
+                }
+            }
+            // Swap the found minimum element with the first element
+            int temp = arr[minIndex];
+            arr[minIndex] = arr[i];
+            arr[i] = temp;
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] arr = {64, 34, 25, 12, 22, 11, 90};
+        selectionSort(arr);
+        System.out.print("Sorted array using Selection Sort: ");
+        for (int num : arr) {
+            System.out.print(num + " ");
+        }
+    }
+}
+3.Find the factorial of a number using recursion.
+import java.util.Scanner;
+
+public class FactorialRecursion {
+    // Recursive method to calculate factorial
+    public static long factorial(int n) {
+        if (n == 0 || n == 1) {
+            return 1; // Base case
+        }
+        return n * factorial(n - 1); // Recursive case
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a number: ");
+        int num = scanner.nextInt();
+        
+        if (num < 0) {
+            System.out.println("Factorial is not defined for negative numbers.");
+        } else {
+            System.out.println("Factorial of " + num + " is " + factorial(num));
+        }
+
+        scanner.close();
+    }
+}
+
+5.Generate the Fibonacci sequence up to n terms.
+import java.util.Scanner;
+
+public class FibonacciRecursion {
+    // Recursive method to find nth Fibonacci number
+    public static int fibonacci(int n) {
+        if (n <= 1) {
+            return n; // Base case
+        }
+        return fibonacci(n - 1) + fibonacci(n - 2); // Recursive case
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the number of terms: ");
+        int n = scanner.nextInt();
+
+        System.out.println("Fibonacci sequence up to " + n + " terms:");
+        for (int i = 0; i < n; i++) {
+            System.out.print(fibonacci(i) + " ");
+        }
+
+        scanner.close();
+    }
+}
+
+6. Write a recursive program to reverse a string.
+import java.util.Scanner;
+
+public class ReverseStringRecursion {
+    // Recursive method to reverse a string
+    public static String reverse(String str) {
+        if (str.isEmpty()) {
+            return str; // Base case: empty string
+        }
+        return reverse(str.substring(1)) + str.charAt(0); // Recursive step
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+
+        String reversed = reverse(input);
+        System.out.println("Reversed string: " + reversed);
+
+        scanner.close();
+    }
+}

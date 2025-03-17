@@ -1,0 +1,169 @@
+task - 18
+Singleton: Create a thread-safe Singleton class Logger with a log(String message) method to print messages with a timestamp.
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Logger {
+    // Private constructor to prevent instantiation
+    private Logger() {}
+
+    // Static inner class for lazy-loaded Singleton instance
+    private static class LoggerHolder {
+        private static final Logger INSTANCE = new Logger();
+    }
+
+    // Public method to get the single instance
+    public static Logger getInstance() {
+        return LoggerHolder.INSTANCE;
+    }
+
+    // Method to log messages with a timestamp
+    public void log(String message) {
+        String timestamp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+        System.out.println("[" + timestamp + "] " + message);
+    }
+}
+2.Singleton: Create a Singleton DatabaseConnection class with connect() and disconnect() methods to simulate a single database connection
+public class DatabaseConnection {
+    private static DatabaseConnection instance;
+    private boolean isConnected;
+
+    private DatabaseConnection() {}
+
+    public static synchronized DatabaseConnection getInstance() {
+        if (instance == null) {
+            instance = new DatabaseConnection();
+        }
+        return instance;
+    }
+
+    public void connect() {
+        if (!isConnected) {
+            isConnected = true;
+            System.out.println("Connected to the database.");
+        } else {
+            System.out.println("Already connected.");
+        }
+    }
+
+    public void disconnect() {
+        if (isConnected) {
+            isConnected = false;
+            System.out.println("Disconnected from the database.");
+        } else {
+            System.out.println("Already disconnected.");
+        }
+    }
+
+    public static void main(String[] args) {
+        DatabaseConnection connection1 = DatabaseConnection.getInstance();
+        connection1.connect();
+        
+        DatabaseConnection connection2 = DatabaseConnection.getInstance();
+        connection2.disconnect();
+    }
+}
+Enum: Define an enum UserRole with roles ADMIN, USER, and GUEST, and print access levels based on the role.
+public class EnumExample {
+    public enum UserRole {
+        ADMIN, USER, GUEST;
+    }
+
+    public static void main(String[] args) {
+        printAccessLevel(UserRole.ADMIN);
+        printAccessLevel(UserRole.USER);
+        printAccessLevel(UserRole.GUEST);
+    }
+
+    public static void printAccessLevel(UserRole role) {
+        switch (role) {
+            case ADMIN:
+                System.out.println("ADMIN: Full access to the system.");
+                break;
+            case USER:
+                System.out.println("USER: Limited access to user features.");
+                break;
+            case GUEST:
+                System.out.println("GUEST: Read-only access.");
+                break;
+            default:
+                System.out.println("Unknown role.");
+        }
+    }
+}
+
+Enum: Create an enum Day for days of the week, and write a program to determine if the day is a weekday or weekend.
+import java.util.EnumSet;
+import java.util.Scanner;
+
+// Enum for days of the week
+enum Day {
+    SUNDAY, MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY;
+
+    // Set containing weekend days
+    private static final EnumSet<Day> WEEKENDS = EnumSet.of(SATURDAY, SUNDAY);
+
+    // Method to check if the day is a weekend or a weekday
+    public boolean isWeekend() {
+        return WEEKENDS.contains(this);
+    }
+}
+
+public class WeekdayOrWeekend {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter a day of the week (e.g., MONDAY, TUESDAY, etc.):");
+        String input = scanner.next().toUpperCase();
+        
+        try {
+            Day day = Day.valueOf(input);
+            
+            System.out.println(day + " is a " + (day.isWeekend() ? "weekend." : "weekday."));
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid day entered. Please enter a valid day of the week.");
+        }
+        
+        scanner.close();
+    }
+}
+
+Enum: Define an enum StatusCode with constants SUCCESS, ERROR, and PENDING, and map status codes to their messages.
+import java.util.EnumSet;
+import java.util.Scanner;
+
+// Enum for status codes
+enum StatusCode {
+    SUCCESS("Operation completed successfully"),
+    ERROR("An error occurred"),
+    PENDING("Operation is still in progress");
+
+    private final String message;
+
+    StatusCode(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+}
+
+public class StatusCodeDemo {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        System.out.println("Enter a status code (SUCCESS, ERROR, PENDING):");
+        String input = scanner.next().toUpperCase();
+        
+        try {
+            StatusCode status = StatusCode.valueOf(input);
+            System.out.println("Status: " + status + " - " + status.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Invalid status code entered. Please enter a valid status.");
+        }
+        
+        scanner.close();
+    }
+}

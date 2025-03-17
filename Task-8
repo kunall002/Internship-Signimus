@@ -1,0 +1,87 @@
+Task 8
+Array
+Task 1:
+Create an array of integers.Find the sum and average of all elements in the array.
+public class ArraySumAverage {
+    public static void main(String[] args) {
+        // Create an array 
+        int[] numbers = {10, 20, 30, 40, 50};
+        
+        // Initialize variables  sum and average
+        int sum = 0;
+        double average;
+        for (int number : numbers) {
+            sum += number;
+        }
+
+        // Calculate the average
+        average = (double) sum / numbers.length;
+
+        // Print the sum and average
+        System.out.println("Sum of array elements: " + sum);
+        System.out.println("Average of array elements: " + average);
+    }
+}
+
+Task 2:
+Implement a program to find the maximum and minimum values in an integer array.
+public class ArrayMaxMin {
+    public static void main(String[] args) {
+        // Create an array of integers
+        int[] numbers = {15, 42, 8, 23, 67, 4, 99};
+        int max = numbers[0];
+        int min = numbers[0];
+// Loop through the array to find max and min values
+        for (int number : numbers) {
+            if (number > max) {
+                max = number; // Update max if a larger value is found
+            }
+            if (number < min) {
+                min = number; // Update min if a smaller value is found
+            }
+        }
+        System.out.println("Maximum value in the array: " + max);
+        System.out.println("Minimum value in the array: " + min);
+    }
+}
+Task 3:
+public class MatrixPrinter {
+    public static void main(String[] args) {
+        // Create a 2D array (matrix)
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+
+        // Print the matrix in a well-formatted manner
+        System.out.println("The matrix is:");
+        for (int i = 0; i < matrix.length; i++) { // Iterate over rows
+            for (int j = 0; j < matrix[i].length; j++) { // Iterate over columns
+                System.out.print(matrix[i][j] + "\t"); // Print each element with a tab
+            }
+            System.out.println(); // Move to the next line after printing a row
+        }
+    }
+}
+Create a two-dimensional array to represent a matrix. Write a program to print the matrix in a well-formatted manner.
+public class MatrixPrinter {
+    public static void main(String[] args) {
+        
+        int[][] matrix = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+        };
+        System.out.println("The matrix is:");
+        for (int i = 0; i < matrix.length; i++) { // Iterate over rows
+            for (int j = 0; j < matrix[i].length; j++) { // Iterate over columns
+                System.out.print(matrix[i][j] + "\t"); // Print each element with a tab
+            }
+            System.out.println(); // Move to the next line after printing a row
+        }
+    }
+}
+
+
+

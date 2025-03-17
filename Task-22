@@ -1,0 +1,99 @@
+Task: 22
+Task 1: Iterator Practice
+Create an ArrayList of student names.
+Use an Iterator to print all student names.
+Remove a student whose name starts with "A" using Iterator.
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class IteratorPractice {
+    public static void main(String[] args) {
+        // Step 1: Create an ArrayList of student names
+        ArrayList<String> students = new ArrayList<>();
+        students.add("Aayan");
+        students.add("Bob");
+        students.add("Aaru");
+        students.add("Aahan");
+        students.add("David");
+
+        
+        System.out.println("Student Names:");
+        Iterator<String> iterator = students.iterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
+
+        // Step 3: Remove a student whose name starts with "A" using Iterator
+        iterator = students.iterator(); // Reinitialize iterator
+        while (iterator.hasNext()) {
+            if (iterator.next().startsWith("A")) {
+                iterator.remove();
+            }
+        }
+
+        
+        System.out.println("\nUpdated Student List (After Removing Names Starting with 'A'):");
+        for (String student : students) {
+            System.out.println(student);
+        }
+    }
+}
+
+Task 2: ListIterator Practice
+Create a LinkedList of city names.
+Use a ListIterator to traverse the list forward and print all cities.
+Then, traverse the list in reverse order and print the cities again.
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+public class ListIteratorPractice {
+    public static void main(String[] args) {
+        // Step 1: Create a LinkedList of city names
+        LinkedList<String> cities = new LinkedList<>();
+        cities.add("New York");
+        cities.add("London");
+        cities.add("Paris");
+        cities.add("Tokyo");
+        cities.add("Sydney");
+
+        // Step 2: Use ListIterator to traverse forward and print all cities
+        System.out.println("Cities in Forward Order:");
+        ListIterator<String> listIterator = cities.listIterator();
+        while (listIterator.hasNext()) {
+            System.out.println(listIterator.next());
+        }
+
+        // Step 3: Use ListIterator to traverse backward and print cities in reverse order
+        System.out.println("\nCities in Reverse Order:");
+        while (listIterator.hasPrevious()) {
+            System.out.println(listIterator.previous());
+        }
+    }
+}
+
+Task 3: Enumeration Practice
+Create a Vector of country names.
+Use Enumeration to print all country names.
+import java.util.Vector;
+import java.util.Enumeration;
+
+public class EnumerationPractice {
+    public static void main(String[] args) {
+        
+        Vector<String> countries = new Vector<>();
+        countries.add("USA");
+        countries.add("Canada");
+        countries.add("India");
+        countries.add("Germany");
+        countries.add("Australia");
+
+        // Step 2: Use Enumeration to print all country names
+        System.out.println("Country Names:");
+        Enumeration<String> enumeration = countries.elements();
+        while (enumeration.hasMoreElements()) {
+            System.out.println(enumeration.nextElement());
+        }
+    }
+}
+
+ 
