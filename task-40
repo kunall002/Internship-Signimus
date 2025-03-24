@@ -1,0 +1,210 @@
+task-40 Create a simple Employee management project in spring boot and implement all CRUD operations. And test all RestAPIs using postman
+package com.inn.EmployeeManagement.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Entity
+public class Employee {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long ID;
+
+    private String Name;
+
+    private String Department;
+
+    private  Double Salary;
+
+    public Employee() {
+    }
+
+    public Employee(Long ID, String name, String department, Double salary) {
+        this.ID = ID;
+        Name = name;
+        Department = department;
+        Salary = salary;
+    }
+
+    public Long getID() {
+        return ID;
+    }
+
+    public void setID(Long ID) {
+        this.ID = ID;
+    }
+
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public String getDepartment() {
+        return Department;
+    }
+
+    public void setDepartment(String department) {
+        Department = department;
+    }
+
+    public Double getSalary() {
+        return Salary;
+    }
+
+    public void setSalary(Double salary) {
+        Salary = salary;
+    }
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "ID=" + ID +
+                ", Name='" + Name + '\'' +
+                ", Department='" + Department + '\'' +
+                ", Sallary=" + Salary +
+                '}';
+    }
+}
+/////
+package com.inn.EmployeeManagement.exception;
+
+public class EmployeeNotFoundException extends RuntimeException {
+    public EmployeeNotFoundException(String message) {
+        super(message);
+    }
+}
+///
+package com.inn.EmployeeManagement.exception;
+
+public class EmployeeNotFoundException extends RuntimeException {
+    public EmployeeNotFoundException(String message) {
+        super(message);
+    }
+}
+////
+package com.inn.EmployeeManagement.exception;
+
+public class EmployeeNotFoundException extends RuntimeException {
+    public EmployeeNotFoundException(String message) {
+        super(message);
+    }
+}
+///
+package com.inn.EmployeeManagement.exception;
+
+public class EmployeeNotFoundException extends RuntimeException {
+    public EmployeeNotFoundException(String message) {
+        super(message);
+    }
+}
+///package com.inn.EmployeeManagement.rest;
+
+import com.inn.EmployeeManagement.entity.Employee;
+import com.inn.EmployeeManagement.service.EmpService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Optional;
+
+@org.springframework.web.bind.annotation.RestController
+@RequestMapping("/employees")
+public class RestController {
+    @Autowired
+    EmpService empService;
+
+    @GetMapping
+    public List<Employee> getAll(){
+        return empService.getAllEmp();
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee>getById(@PathVariable Long id){
+        Optional<Employee> employee = Optional.ofNullable(empService.getEmpById(id));
+        return employee.map(value ->new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() ->new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+    @PostMapping
+    public Employee create(@RequestBody Employee employee) {
+        return empService.createEmployee(employee);
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<Employee> update(@PathVariable Long id, @RequestBody Employee updatedEmployee) {
+        Optional<Employee> employee = empService.updateEmployee(id, updatedEmployee);
+        return employee.map(value -> new ResponseEntity<>(value, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (empService.deleteEmployee(id)) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+}
+///
+package com.inn.EmployeeManagement.service;
+
+import com.inn.EmployeeManagement.entity.Employee;
+import com.inn.EmployeeManagement.exception.EmployeeNotFoundException;
+import com.inn.EmployeeManagement.repository.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class EmpService {
+    @Autowired
+    Repository repository;
+
+    public List<Employee> getAllEmp(){
+        return repository.findAll();
+    }
+    public Employee getEmpById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new EmployeeNotFoundException("Employee not found with id: " + id));
+    }
+
+    public Employee createEmployee(Employee employee){
+        return repository.save(employee);
+    }
+
+    public Optional<Employee> updateEmployee(Long id, Employee updatedEmployee) {
+        return repository.findById(id).map(employee -> {
+            employee.setName(updatedEmployee.getName());
+            employee.setDepartment(updatedEmployee.getDepartment());
+            employee.setSalary(updatedEmployee.getSalary());
+            return repository.save(employee);
+        });
+    }
+    public Boolean deleteEmployee(Long id){
+        if (repository.existsById(id)){
+            repository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+}
+package com.inn.EmployeeManagement;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class EmployeeManagementApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(EmployeeManagementApplication.class, args);
+	}
+
+}
