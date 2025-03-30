@@ -1,0 +1,157 @@
+Task 41: 
+Create a new Project, create Entity for Products (id, productName, price) and create service like find the product by its id, and handle the exception if product id not found, create a method will return all the products are > 5000
+package com.inn.productManegment.entity;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.Data;
+
+
+@Data
+@Entity
+public class Product {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String productName;
+    private double price;
+}
+package com.inn.productManegment.exception;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import java.time.LocalDateTime;
+
+@Data
+@AllArgsConstructor
+public class CustomErrorResponse {
+    private int statusCode;
+    private String errorCode;
+    private String message;
+    private LocalDateTime timestamp;
+}
+
+package com.inn.productManegment.exception;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import lombok.extern.slf4j.Slf4j;
+
+import java.time.LocalDateTime;
+
+@Slf4j
+@RestControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(ProductNotFoundException.class)
+    public ResponseEntity<CustomErrorResponse> handleProductNotFoundException(ProductNotFoundException ex) {
+        log.error("Product Not Found: {}", ex.getMessage());
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                HttpStatus.NOT_FOUND.value(),
+                "PRODUCT_NOT_FOUND",
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<CustomErrorResponse> handleIllegalArgumentException(IllegalArgumentException ex) {
+        log.warn("Bad Request: {}", ex.getMessage());
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                HttpStatus.BAD_REQUEST.value(),
+                "BAD_REQUEST",
+                ex.getMessage(),
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<CustomErrorResponse> handleGenericException(Exception ex) {
+        log.error("Unexpected Error: {}", ex.getMessage(), ex);
+        CustomErrorResponse errorResponse = new CustomErrorResponse(
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "INTERNAL_SERVER_ERROR",
+                "An unexpected error occurred.",
+                LocalDateTime.now()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+}
+package com.inn.productManegment.exception;
+
+    public class ProductNotFoundException extends RuntimeException {
+        public ProductNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+
+package com.inn.productManegment.repository;
+
+import com.inn.productManegment.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ProductRepo extends JpaRepository<Product,Long> {
+    List<Product> findByPriceGreaterThan(double price);
+
+
+}
+package com.inn.productManegment.rest;
+
+import com.inn.productManegment.entity.Product;
+import com.inn.productManegment.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+    @Autowired
+    private ProductService productService;
+
+        @GetMapping("/{id}")
+        public ResponseEntity<Product> getProductById(@PathVariable Long id) {
+            return ResponseEntity.ok(productService.getProductById(id));
+        }
+
+        @GetMapping("/above-5000")
+        public ResponseEntity<List<Product>> getProductsAbove5000() {
+            return ResponseEntity.ok(productService.getProductsAbove5000());
+        }
+
+        @GetMapping
+        public ResponseEntity<List<Product>> getAllProducts() {
+            return ResponseEntity.ok(productService.getAllProducts());
+        }
+
+        @PostMapping
+        public ResponseEntity<Product> createProduct(@RequestBody Product product) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(productService.saveProduct(product));
+        }
+
+}
+package com.inn.productManegment;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class ProductManegmentApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(ProductManegmentApplication.class, args);
+	}
+
+}

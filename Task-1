@@ -1,0 +1,150 @@
+Task-1
+1.Write a program for check if a number is even or odd.
+public class even {
+  public static void main(String[] args) {
+    int number = 5;
+    
+    if (number % 2 == 0)
+ {
+      System.out.println(number + " is even.");
+    } 
+else 
+{
+      System.out.println(number + " is odd.");
+    }
+  }
+}
+
+2.Print a number pyramid using nested loops.
+public class PyramidPattern {
+    public static void main(String[] args) {
+        int n = 5; 
+        int r = 1; 
+
+        while (r <= n) {
+            int spaces = n - r; 
+            int c = 0; // Initialize column counter
+
+            
+            while (spaces > 0) {
+                System.out.print("  ");
+                spaces--;
+            }
+
+            // Print asterisks
+            while (c < r) {
+                System.out.print("* ");
+                c++;
+            }
+
+            
+            System.out.println();
+            r++;
+        }
+    }
+}
+
+3.calculate the factorial of a number.
+class FactorialExample{  
+ public static void main(String args[]){  
+  int i,fact=1;  
+  int number=5;
+  for(i=1;i<=number;i++){    
+      fact=fact*i;    
+  }    
+  System.out.println("Factorial of "+number+" is: "+fact);    
+ }  
+}
+
+2.Post your excitement for starting this journey on LinkedIn.
+Complete and showcase a simple control flow project ( number guessing game) on GitHub.
+import java.util.Scanner;
+import java.util.Random;
+
+public class NumberGuessingGame {
+    public static void main(String[] args) {
+        // Initialize Scanner and Random
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+        
+        // Generate a random number between 1 and 100
+        int randomNumber = random.nextInt(100) + 1; 
+        System.out.println("Welcome to the Number Guessing Game!");
+        System.out.println("I have picked a random number between 1 and 100. Can you guess it?");
+        
+        int guessCount = 0;
+        long startTime = System.currentTimeMillis(); // Record start time
+        int userGuess = 0;
+        
+        // Loop until the user guesses the correct number
+        while (userGuess != randomNumber) {
+            System.out.print("Enter your guess: ");
+            userGuess = scanner.nextInt();
+            guessCount++;
+            
+            if (userGuess > randomNumber) {
+                System.out.println("Too high! Try again.");
+            } else if (userGuess < randomNumber) {
+                System.out.println("Too low! Try again.");
+            } else {
+                System.out.println("Congratulations! You guessed the number.");
+            }
+            
+            // Provide a hint about the distance between the numbers
+            if (userGuess != randomNumber) {
+                int difference = Math.abs(randomNumber - userGuess);
+                System.out.println("Hint: You are " + difference + " away from the correct number.");
+            }
+        }
+        
+        // Record end time
+        long endTime = System.currentTimeMillis();
+        long timeTaken = (endTime - startTime) / 1000; // Time in seconds
+        
+        // Display results
+        System.out.println("\nGame Over!");
+        System.out.println("You guessed the number in " + guessCount + " attempts.");
+        System.out.println("Time taken: " + timeTaken + " seconds.");
+    }
+}
+3.class Car {
+    String brand;
+    String color;
+    int speed;
+
+    Car(String brand, String color, int speed) {
+        this.brand = brand;
+        this.color = color;
+        this.speed = speed;
+    }
+
+    void start() {
+        System.out.println(brand + " car has started.");
+    }
+
+    void stop() {
+        System.out.println(brand + " car has stopped.");
+    }
+
+    void accelerate(int increment) {
+        speed += increment;
+        System.out.println(brand + " car accelerated. Current speed: " + speed + " km/h");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Car car1 = new Car("Toyota", "Red", 60);
+        Car car2 = new Car("Honda", "Blue", 50);
+
+        car1.start();
+        car1.accelerate(20);
+        car1.stop();
+
+        System.out.println();
+
+        car2.start();
+        car2.accelerate(30);
+        car2.stop();
+    }
+}

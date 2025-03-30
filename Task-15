@@ -1,0 +1,195 @@
+task -15
+Create a program to:
+Add and retrieve elements from an ArrayList and a LinkedList.Demonstrate insertion order and sorting in TreeSet.Use a HashMap to store and retrieve student details (roll number, name).
+import java.io.*;
+import java.util.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', marks=" + marks + "}";
+    }
+}
+
+public class FileReaderUtility {
+    public static void main(String[] args) {
+        String filePath = "student.ser";
+
+        Student student = new Student("John Doe", 85);
+        serializeStudent(student, filePath);
+        System.out.println("Deserialized Student: " + deserializeStudent(filePath));
+
+        String textFilePath = "sample.txt";
+        System.out.println("Word Count in file: " + countWordsInFile(textFilePath));
+
+        List<String> arrayList = new ArrayList<>(Arrays.asList("A", "B", "C"));
+        List<String> linkedList = new LinkedList<>(arrayList);
+        System.out.println("ArrayList: " + arrayList);
+        System.out.println("LinkedList: " + linkedList);
+
+        TreeSet<Integer> treeSet = new TreeSet<>(Arrays.asList(5, 3, 8, 1));
+        System.out.println("TreeSet (Sorted): " + treeSet);
+
+        HashMap<Integer, String> studentMap = new HashMap<>();
+        studentMap.put(101, "Alice");
+        studentMap.put(102, "Bob");
+        System.out.println("HashMap: " + studentMap);
+    }
+
+    public static void serializeStudent(Student student, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(student);
+        } catch (IOException e) {
+            System.err.println("Error serializing student: " + e.getMessage());
+        }
+    }
+
+    public static Student deserializeStudent(String filePath) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            return (Student) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error deserializing student: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static int countWordsInFile(String filePath) {
+        int wordCount = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                wordCount += line.split("\\s+").length;
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return wordCount;
+    }
+}
+Write a program to count the frequency of each word in a given sentence using HashMap Write a program to find duplicate elements in an ArrayList. Given a list of integers, remove duplicates using a HashSet.
+import java.io.*;
+import java.util.*;
+
+class Student implements Serializable {
+    private static final long serialVersionUID = 1L;
+    private String name;
+    private int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getMarks() {
+        return marks;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{name='" + name + "', marks=" + marks + "}";
+    }
+}
+
+public class FileReaderUtility {
+    public static void main(String[] args) {
+        String filePath = "student.ser";
+
+        Student student = new Student("John Doe", 85);
+        serializeStudent(student, filePath);
+        System.out.println("Deserialized Student: " + deserializeStudent(filePath));
+
+        String textFilePath = "sample.txt";
+        System.out.println("Word Count in file: " + countWordsInFile(textFilePath));
+
+        List<String> arrayList = new ArrayList<>(Arrays.asList("A", "B", "C", "A", "B"));
+        System.out.println("Duplicate Elements: " + findDuplicates(arrayList));
+        
+        List<Integer> numList = Arrays.asList(1, 2, 3, 2, 4, 1, 5);
+        System.out.println("Unique Elements: " + removeDuplicates(numList));
+        
+        TreeSet<Integer> treeSet = new TreeSet<>(Arrays.asList(5, 3, 8, 1));
+        System.out.println("TreeSet (Sorted): " + treeSet);
+
+        HashMap<Integer, String> studentMap = new HashMap<>();
+        studentMap.put(101, "Alice");
+        studentMap.put(102, "Bob");
+        System.out.println("HashMap: " + studentMap);
+        
+        String sentence = "this is a test this is only a test";
+        System.out.println("Word Frequency: " + countWordFrequency(sentence));
+    }
+
+    public static void serializeStudent(Student student, String filePath) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+            oos.writeObject(student);
+        } catch (IOException e) {
+            System.err.println("Error serializing student: " + e.getMessage());
+        }
+    }
+
+    public static Student deserializeStudent(String filePath) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+            return (Student) ois.readObject();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println("Error deserializing student: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static int countWordsInFile(String filePath) {
+        int wordCount = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                wordCount += line.split("\\s+").length;
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+        return wordCount;
+    }
+    
+    public static Map<String, Integer> countWordFrequency(String sentence) {
+        Map<String, Integer> wordCountMap = new HashMap<>();
+        for (String word : sentence.split(" ")) {
+            wordCountMap.put(word, wordCountMap.getOrDefault(word, 0) + 1);
+        }
+        return wordCountMap;
+    }
+    
+    public static Set<String> findDuplicates(List<String> list) {
+        Set<String> unique = new HashSet<>();
+        Set<String> duplicates = new HashSet<>();
+        for (String item : list) {
+            if (!unique.add(item)) {
+                duplicates.add(item);
+            }
+        }
+        return duplicates;
+    }
+    
+    public static Set<Integer> removeDuplicates(List<Integer> list) {
+        return new HashSet<>(list);
+    }
+}

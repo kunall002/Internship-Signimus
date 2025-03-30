@@ -1,0 +1,57 @@
+task 33: 
+Use Stream API to filter a list of students whose marks are above 80.
+Convert a list of names to uppercase using map().
+Find the sum of all numbers in a list using reduce().
+import java.util.*;
+import java.util.stream.*;
+
+class Student {
+    String name;
+    int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + marks + ")";
+    }
+}
+
+public class StreamExample {
+    public static void main(String[] args) {
+        // Task 1: Filter students with marks > 80
+        List<Student> students = Arrays.asList(
+            new Student("Alice", 85),
+            new Student("Bob", 75),
+            new Student("Charlie", 90),
+            new Student("David", 60),
+            new Student("Eve", 95)
+        );
+
+        List<Student> highScorers = students.stream()
+                                           .filter(s -> s.marks > 80)
+                                           .collect(Collectors.toList());
+
+        System.out.println("Students with marks > 80: " + highScorers);
+
+        // Task 2: Convert a list of names to uppercase using map()
+        List<String> names = Arrays.asList("john", "michael", "sara", "kate");
+        
+        List<String> upperCaseNames = names.stream()
+                                           .map(String::toUpperCase)
+                                           .collect(Collectors.toList());
+
+        System.out.println("Names in uppercase: " + upperCaseNames);
+
+        // Task 3: Find the sum of all numbers in a list using reduce()
+        List<Integer> numbers = Arrays.asList(10, 20, 30, 40, 50);
+
+        int sum = numbers.stream()
+                         .reduce(0, Integer::sum);
+
+        System.out.println("Sum of numbers: " + sum);
+    }
+}

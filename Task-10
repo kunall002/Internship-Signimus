@@ -1,0 +1,58 @@
+Task - 10
+Reverse an array without using additional arrays.
+
+1.Implement a program to check if two strings are anagrams.
+import java.util.Arrays;  
+public class Anagram {      
+    public static void main (String [] args) {          
+        String str1="Brag";  
+        String str2="Grab";  
+          
+        //Converting both the string to lower case.  
+        str1 = str1.toLowerCase();  
+        str2 = str2.toLowerCase();  
+          
+        //Checking for the length of strings  
+        if (str1.length() != str2.length()) {  
+            System.out.println("Both the strings are not anagram");  
+        }  
+        else {  
+            char[] string1 = str1.toCharArray();  
+            char[] string2 = str2.toCharArray();  
+              
+           Arrays.sort(string1);  
+            Arrays.sort(string2);  
+              if(Arrays.equals(string1, string2) == true) {  
+                System.out.println("Both the strings are anagram");  
+            }  
+            else {  
+                System.out.println("Both the strings are not anagram");  
+            }  
+        }  
+    }  
+}  
+2.Create a program using StringBuilder to reverse a string and remove vowels from it.
+public class ReverseAndRemoveVowels {
+    public static void main(String[] args) {
+        String input = "Hello, World!";
+        String result = reverseAndRemoveVowels(input);
+        System.out.println("Reversed string without vowels: " + result);
+    }
+
+    public static String reverseAndRemoveVowels(String str) {
+        StringBuilder sb = new StringBuilder();
+        
+        for (int i = str.length() - 1; i >= 0; i--) {
+            char ch = str.charAt(i);
+            if (!isVowel(ch)) {
+                sb.append(ch);
+            }
+        }
+        
+        return sb.toString();
+    }
+
+    public static boolean isVowel(char ch) {
+        return "AEIOUaeiou".indexOf(ch) != -1;
+    }
+}

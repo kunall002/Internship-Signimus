@@ -1,0 +1,77 @@
+task - 13
+Write a program to:
+Create a text file and write random numbers to it.
+Read the file and print the sum of those numbers.
+Write a program using BufferedReader to read a file line-by-line and count the number of lines.
+Create a program to copy content from a binary file (e.g., an image) using FileInputStream and FileOutputStream
+import java.io.*;
+import java.util.Random;
+
+public class FileOperations {
+    public static void main(String[] args) {
+        String textFile = "numbers.txt";
+        String binaryFile = "source.jpg";
+        String copiedBinaryFile = "copy.jpg";
+        
+        writeRandomNumbersToFile(textFile, 10);
+        
+        int sum = readAndSumNumbersFromFile(textFile);
+        System.out.println("Sum of numbers: " + sum);
+        
+        int lineCount = countLinesInFile(textFile);
+        System.out.println("Number of lines: " + lineCount);
+        
+        copyBinaryFile(binaryFile, copiedBinaryFile);
+    }
+    
+    private static void writeRandomNumbersToFile(String fileName, int count) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+            Random random = new Random();
+            for (int i = 0; i < count; i++) {
+                int num = random.nextInt(100);
+                writer.write(num + "\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private static int readAndSumNumbersFromFile(String fileName) {
+        int sum = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sum += Integer.parseInt(line);
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return sum;
+    }
+    
+    private static int countLinesInFile(String fileName) {
+        int lineCount = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            while (reader.readLine() != null) {
+                lineCount++;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return lineCount;
+    }
+    
+    private static void copyBinaryFile(String sourceFile, String destinationFile) {
+        try (FileInputStream fis = new FileInputStream(sourceFile);
+             FileOutputStream fos = new FileOutputStream(destinationFile)) {
+            byte[] buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = fis.read(buffer)) != -1) {
+                fos.write(buffer, 0, bytesRead);
+            }
+            System.out.println("Binary file copied successfully.");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}

@@ -1,0 +1,44 @@
+Task - 28
+Write a Java program to establish a database connection and display all records from a sample table using Statement.
+import java.sql.*;
+
+public class DatabaseConnectionExample {
+    public static void main(String[] args) {
+        // Database credentials
+        String url = "jdbc:mysql://localhost:3306/sampledb";
+        String user = "root";
+        String password = "password";
+        
+       
+        String query = "SELECT * FROM sample_table";
+
+        try (
+            
+            Connection conn = DriverManager.getConnection(url, user, password);
+           
+            Statement stmt = conn.createStatement();
+            
+            ResultSet rs = stmt.executeQuery(query)
+        ) {
+            
+            ResultSetMetaData rsmd = rs.getMetaData();
+            int columnCount = rsmd.getColumnCount();
+            
+           
+            for (int i = 1; i <= columnCount; i++) {
+                System.out.print(rsmd.getColumnName(i) + "\t");
+            }
+            System.out.println();
+
+           
+            while (rs.next()) {
+                for (int i = 1; i <= columnCount; i++) {
+                    System.out.print(rs.getString(i) + "\t");
+                }
+                System.out.println();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

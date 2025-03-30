@@ -1,0 +1,89 @@
+Create a package com.company.department with two classes:
+1.Employee with private fields and public methods.package com.company.department;
+public class Employee {
+    private String name;
+    private int age;
+    String department;
+    protected double salary;
+    public String role;
+
+    public Employee(String name, int age, String department, double salary, String role) {
+        this.name = name;
+        this.age = age;
+        this.department = department;
+        this.salary = salary;
+        this.role = role;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    protected void increaseSalary(double increment) {
+        this.salary += increment;
+    }
+
+    void displayDetails() {
+        System.out.println("Employee: " + name + ", Age: " + age + ", Dept: " + department +
+                           ", Salary: " + salary + ", Role: " + role);
+    }
+}
+2.Department that accesses Employee details using methods.
+package com.company.department;
+public class Department {
+    public void showEmployeeDetails() {
+        Employee emp = new Employee("John Doe", 30, "IT", 60000, "Developer");
+
+        // Accessing fields using methods
+        System.out.println("Employee Name (Public Getter): " + emp.getName());
+        System.out.println("Role (Public): " + emp.role);
+
+        // Accessing default member (same package)
+        System.out.println("Department (Default): " + emp.department);
+
+        // Accessing protected member (same package)
+        emp.increaseSalary(5000);
+        System.out.println("Updated Salary (Protected Method): " + emp.salary);
+
+        // Private fields can't be accessed directly (will cause an error)
+        // System.out.println(emp.name); // ERROR
+        // System.out.println(emp.age);  // ERROR
+
+        emp.displayDetails(); // Accessible since it's package-private
+    }
+}
+3.Demonstrate the use of all access modifiers in a program.Write a program that imports java.util classes and performs sorting of a list.
+package com.company.department;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        Department dept = new Department();
+        dept.showEmployeeDetails();
+
+        // Sorting a list using java.util
+        List<String> employeeNames = new ArrayList<>();
+        employeeNames.add("John");
+        employeeNames.add("Alice");
+        employeeNames.add("Bob");
+
+        System.out.println("\nBefore Sorting: " + employeeNames);
+        Collections.sort(employeeNames);
+        System.out.println("After Sorting: " + employeeNames);
+    }
+}
+

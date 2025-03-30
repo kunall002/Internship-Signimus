@@ -1,0 +1,87 @@
+task - 26 
+Library Management System where students (threads) try to borrow and return books. 
+To ensure thread safety, we use synchronized methods so that only one student can borrow or return a book at a time. Use wait() method and notify() method to manage the synchronization.
+import java.util.LinkedList;
+import java.util.Queue;
+
+class Library {
+    private final int capacity;
+    private final Queue<String> books = new LinkedList<>();
+
+    public Library(int capacity) {
+        this.capacity = capacity;
+    }
+
+    public synchronized void borrowBook(String student) {
+        while (books.isEmpty()) {
+            System.out.println(student + " is waiting for a book...");
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        String book = books.poll();
+        System.out.println(student + " borrowed " + book);
+        notifyAll();
+    }
+
+    public synchronized void returnBook(String student, String book) {
+        while (books.size() >= capacity) {
+            System.out.println(student + " is waiting to return " + book);
+            try {
+                wait();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+        books.add(book);
+        System.out.println(student + " returned " + book);
+        notifyAll();
+    }
+}
+
+class Student extends Thread {
+    private final Library library;
+    private final String name;
+    private final String book;
+
+    public Student(Library library, String name, String book) {
+        this.library = library;
+        this.name = name;
+        this.book = book;
+    }
+
+    @Override
+    public void run() {
+        library.borrowBook(name);
+        try {
+           
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        library.returnBook(name, book);
+    }
+}
+
+public class LibraryManagementSystem {
+    public static void main(String[] args) {
+        Library library = new Library(3);
+        
+       
+        library.returnBook("Librarian", "Java Programming");
+        library.returnBook("Librarian", "Data Structures");
+        library.returnBook("Librarian", "Operating Systems");
+        
+        // Creating students who try to borrow and return books
+        Student s1 = new Student(library, "Alice", "Java Programming");
+        Student s2 = new Student(library, "Bob", "Data Structures");
+        Student s3 = new Student(library, "Charlie", "Operating Systems");
+        Student s4 = new Student(library, "David", "Computer Networks");
+        
+        s1.start();
+        s2.start();
+        s3.start();
+        s4.start();
+    }
+}

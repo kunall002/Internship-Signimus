@@ -1,0 +1,33 @@
+Task : 36
+BASE64 task
+import java.util.Base64;
+
+public class Base64Example {
+    public static void main(String[] args) {
+        String originalText = "Hello, Java 8 Base64!";
+
+        // Encoding
+        String encodedText = Base64.getEncoder().encodeToString(originalText.getBytes());
+        System.out.println("Encoded: " + encodedText);
+
+        // Decoding
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedText);
+        String decodedText = new String(decodedBytes);
+        System.out.println("Decoded: " + decodedText);
+    }
+}
+import java.util.Base64;
+
+public class Base64MimeExample {
+    public static void main(String[] args) {
+        String text = "This is a long text for MIME encoding in Base64.";
+
+        // Encoding (MIME, 76-character line length)
+        String mimeEncoded = Base64.getMimeEncoder().encodeToString(text.getBytes());
+        System.out.println("MIME Encoded:\n" + mimeEncoded);
+
+        // Decoding
+        String mimeDecoded = new String(Base64.getMimeDecoder().decode(mimeEncoded));
+        System.out.println("MIME Decoded: " + mimeDecoded);
+    }
+}

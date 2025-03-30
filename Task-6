@@ -1,0 +1,80 @@
+Task 6
+Implement method overloading by creating a Calculator class with methods to add two numbers, three numbers, and concatenate strings.
+Demonstrate method overriding using an example of a parent Animal class and a Dog subclass, where sound() is overridden.
+Leet code: 1768. Merge Strings Alternately
+public class calculator {
+
+        // Overloaded method to add two numbers
+        int add(int a, int b) {
+            return a + b;
+        }
+
+        // Overloaded method to add three numbers
+        int add(int a, int b, int c) {
+            return a + b + c;
+        }
+
+        // Overloaded method to concatenate strings
+        String add(String str1, String str2) {
+            return str1 + str2;
+        }
+    }
+
+    // Parent Animal class for Method Overriding
+    class Animal {
+        void sound() {
+            System.out.println("Animals make sounds");
+        }
+    }
+
+    // Subclass Dog overriding the sound() method
+    class Dog extends Animal {
+        @Override
+        void sound() {
+            System.out.println("Dogs bark");
+        }
+    }
+
+    // LeetCode 1768: Merge Strings Alternately
+    class MergeStrings {
+        public String mergeAlternately(String word1, String word2) {
+            StringBuilder result = new StringBuilder();
+            int i = 0, j = 0;
+
+            // Add characters alternately
+            while (i < word1.length() && j < word2.length()) {
+                result.append(word1.charAt(i++));
+                result.append(word2.charAt(j++));
+            }
+
+            // Append remaining characters from either string
+            if (i < word1.length()) result.append(word1.substring(i));
+            if (j < word2.length()) result.append(word2.substring(j));
+
+            return result.toString();
+        }
+    }
+
+    // Main Class to Test Everything
+    public class Main {
+        public static void main(String[] args) {
+            // Demonstrate Method Overloading
+            Calculator calc = new Calculator();
+            System.out.println("Addition of 2 numbers: " + calc.add(5, 10));
+            System.out.println("Addition of 3 numbers: " + calc.add(5, 10, 15));
+            System.out.println("Concatenation of strings: " + calc.add("Hello, ", "World!"));
+
+            // Demonstrate Method Overriding
+            Animal myAnimal = new Animal();
+            Animal myDog = new Dog();
+            myAnimal.sound();
+            myDog.sound();
+
+            // Demonstrate LeetCode Problem Solution
+            MergeStrings mergeStrings = new MergeStrings();
+            String merged = mergeStrings.mergeAlternately("abc", "pqr");
+            System.out.println("Merged Strings Alternately: " + merged);
+        }
+    }
+
+

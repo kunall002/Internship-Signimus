@@ -1,0 +1,150 @@
+task 30:
+Create a banking system where multiple transactions occur, and rollback changes if a transaction fails.
+import java.sql.*;
+
+public class BankingSystem {
+    private static final String URL = "jdbc:mysql://localhost:3306/bank_db";
+    private static final String USER = "root";
+    private static final String PASSWORD = "password";
+
+    public static void main(String[] args) {
+        processTransactions();
+    }
+
+    public static void processTransactions() {
+        Connection conn = null;
+        PreparedStatement stmt = null;
+
+        try {
+            conn = DriverManager.getConnection(URL, USER, PASSWORD);
+            conn.setAutoCommit(false); // Start transaction
+
+            // Example: Multiple transactions
+            performTransaction(conn, 1, 2, 500);
+            performTransaction(conn, 3, 4, 300);
+            performTransaction(conn, 5, 6, 200);
+            
+            conn.commit(); // Commit if all transactions succeed
+            System.out.println("All transactions successful.");
+        } catch (SQLException e) {
+            try {
+                if (conn != null) {
+                    conn.rollback(); 
+                    System.err.println("Transaction failed, changes rolled back.");
+                }
+            } catch (SQLException rollbackEx) {
+                rollbackEx.printStackTrace();
+            }
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException closeEx) {
+                closeEx.printStackTrace();
+            }
+        }
+    }
+
+    public static void performTransaction(Connection conn, int fromAccount, int toAccount, double amount) throws SQLException {
+        PreparedStatement withdrawStmt = null;
+        PreparedStatement depositStmt = null;
+        
+        try {
+            // Withdraw from sender's account
+            String withdrawSQL = "UPDATE accounts SET balance = balance - ? WHERE id = ?";
+            withdrawStmt = conn.prepareStatement(withdrawSQL);
+            withdrawStmt.setDouble(1, amount);
+            withdrawStmt.setInt(2, fromAccount);
+            int withdrawCount = withdrawStmt.executeUpdate();
+            if (withdrawCount == 0) {
+                throw new SQLException("Withdrawal failed: Insufficient funds or account not found.");
+            }
+
+           
+            String depositSQL = "UPDATE accounts SET balance = balance + ? WHERE id = ?";
+            depositStmt = conn.prepareStatement(depositSQL);
+            depositStmt.setDouble(1, amount);
+            depositStmt.setInt(2, toAccount);
+            int depositCount = depositStmt.executeUpdate();
+            if (depositCount == 0) {
+                throw new SQLException("Deposit failed: Account not found.");
+            }
+            
+            System.out.println("Transaction successful: Transferred " + amount + " from Account " + fromAccount + " to Account " + toAccount);
+        } finally {
+            if (withdrawStmt != null) withdrawStmt.close();
+            if (depositStmt != null) depositStmt.close();
+        }
+    }
+}
+
+2.Implement batch processing to insert multiple records at once.
+import java.sql.*;
+
+public class App {
+    public static void main(String[] args) {
+        // Step 1: Set up the connection details
+        String url = "jdbc:mysql://localhost:3306/mydatabase";
+        String userName = "root";
+        String password = "password";
+
+        Connection conn = null;
+        PreparedStatement statement = null;
+
+        try {
+            // Establish connection
+            conn = DriverManager.getConnection(url, userName, password);
+
+            // SQL Query with placeholders
+            String sql = "INSERT INTO users (name, email) VALUES (?, ?)";
+
+            // Prepare statement
+            statement = conn.prepareStatement(sql);
+
+            // Disable auto-commit for batch processing
+            conn.setAutoCommit(false);
+
+            // Sample data to insert
+            String[][] users = {
+                {"Alice", "alice@example.com"},
+                {"Bob", "bob@example.com"},
+                {"Charlie", "charlie@example.com"},
+                {"David", "david@example.com"}
+            };
+
+            // Add multiple records to batch
+            for (String[] user : users) {
+                statement.setString(1, user[0]);
+                statement.setString(2, user[1]);
+                statement.addBatch(); // Add to batch
+            }
+
+            // Execute batch
+            int[] updateCounts = statement.executeBatch();
+
+            // Commit transaction
+            conn.commit();
+
+            // Print successful insertions
+            System.out.println("Inserted " + updateCounts.length + " records successfully.");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (conn != null) {
+                try {
+                    conn.rollback(); // Rollback in case of error
+                    System.out.println("Transaction rolled back.");
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+        } finally {
+            try {
+                if (statement != null) statement.close();
+                if (conn != null) conn.close();
+            } catch (SQLException closeEx) {
+                closeEx.printStackTrace();
+            }
+        }
+    }
+}

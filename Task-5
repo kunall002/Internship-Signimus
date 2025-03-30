@@ -1,0 +1,56 @@
+Task-5
+Create a Person class with attributes name and age.Create a Student class that inherits from Person and adds studentId and course fields.Override the toString() method in the Student class to display student details.
+// Person class
+class Person {
+    private String name;
+    private int age;
+
+    // Constructor for Person
+    public Person(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    // Getters
+    public String getName() {
+        return name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+}
+
+// Student class inheriting from Person
+class Student extends Person {
+    private String studentId;
+    private String course;
+
+    // Constructor for Student
+    public Student(String name, int age, String studentId, String course) {
+        super(name, age); // Call the parent constructor
+        this.studentId = studentId;
+        this.course = course;
+    }
+
+    // Override the toString() method
+    @Override
+    public String toString() {
+        return "Student Details:\n" +
+               "Name: " + getName() + "\n" +
+               "Age: " + getAge() + "\n" +
+               "Student ID: " + studentId + "\n" +
+               "Course: " + course;
+    }
+}
+
+// Main class
+public class Main {
+    public static void main(String[] args) {
+        // Create a Student object
+        Student student = new Student("John Doe", 20, "S12345", "Computer Science");
+
+        // Print the Student object using toString()
+        System.out.println(student);
+    }
+}

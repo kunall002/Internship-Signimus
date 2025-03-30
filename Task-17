@@ -1,0 +1,72 @@
+task -17
+Implement a stack to reverse a string.
+import java.util.Stack;
+
+public class StringReverser {
+    public static String reverseString(String str) {
+        Stack<Character> stack = new Stack<>();
+        
+        // Push all characters of string to stack
+        for (char ch : str.toCharArray()) {
+            stack.push(ch);
+        }
+        
+        // Pop all characters from stack and build reversed string
+        StringBuilder reversed = new StringBuilder();
+        while (!stack.isEmpty()) {
+            reversed.append(stack.pop());
+        }
+        
+        return reversed.toString();
+    }
+
+    public static void main(String[] args) {
+        String input = "Hello, World!";
+        String reversed = reverseString(input);
+        System.out.println("Original: " + input);
+        System.out.println("Reversed: " + reversed);
+    }
+}
+
+priority hospital queue for urgent emergency?
+import java.util.PriorityQueue;
+import java.util.Comparator;
+
+class Patient {
+    String name;
+    int priority; // Higher value means more urgent
+    
+    public Patient(String name, int priority) {
+        this.name = name;
+        this.priority = priority;
+    }
+    
+    @Override
+    public String toString() {
+        return "Patient{name='" + name + "', priority=" + priority + "}";
+    }
+}
+
+class PatientComparator implements Comparator<Patient> {
+    @Override
+    public int compare(Patient p1, Patient p2) {
+        return Integer.compare(p2.priority, p1.priority); // Higher priority first
+    }
+}
+
+public class HospitalQueue {
+    public static void main(String[] args) {
+        PriorityQueue<Patient> queue = new PriorityQueue<>(new PatientComparator());
+        
+        // Adding patients to the queue
+        queue.add(new Patient("John", 2)); // Normal case
+        queue.add(new Patient("Alice", 5)); // Critical case
+        queue.add(new Patient("Bob", 1)); // Less urgent
+        queue.add(new Patient("Eve", 4)); // Serious condition
+        
+        // Processing patients in order of priority
+        while (!queue.isEmpty()) {
+            System.out.println("Attending: " + queue.poll());
+        }
+    }
+}

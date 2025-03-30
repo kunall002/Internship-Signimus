@@ -1,0 +1,62 @@
+Task-19
+1.Create an interface Shape with an abstract method calculateArea().
+2.Create an abstract class Rectangle that implements Shape.
+It should have two protected instance variables: width and height.
+It should have a constructor that takes width and height as arguments.
+3.Create an anonymous class that extends Rectangle and provides the implementation for the calculateArea() method.
+4.Create a nested static class Circle within the Rectangle class that implements Shape.
+It should have a private instance variable radius.
+It should have a constructor that takes radius as an argument.
+It should provide the implementation for the calculateArea() method.
+5.Create a main class to:
+Create an instance of the anonymous Rectangle class.
+Create an instance of the Rectangle.Circle class.
+Print the areas of both shapes.
+
+interface Shape {
+    double calculateArea();
+}
+
+//  abstract class Rectangle that implements Shape
+abstract class Rectangle implements Shape {
+    protected double width;
+    protected double height;
+
+    public Rectangle(double width, double height) {
+        this.width = width;
+        this.height = height;
+    }
+
+    // Nested static class Circle within Rectangle that implements Shape
+    public static class Circle implements Shape {
+        private double radius;
+
+        public Circle(double radius) {
+            this.radius = radius;
+        }
+
+        @Override
+        public double calculateArea() {
+            return Math.PI * radius * radius;
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        //  anonymous class extending Rectangle
+        Rectangle rectangle = new Rectangle(5, 10) {
+            @Override
+            public double calculateArea() {
+                return width * height;
+            }
+        };
+
+        // instance of the nested Circle class
+        Rectangle.Circle circle = new Rectangle.Circle(7);
+
+        // Print the areas
+        System.out.println("Area of Rectangle with width 5 and height 10: " + rectangle.calculateArea());
+        System.out.println("Area of Circle with radius 7: " + circle.calculateArea());
+    }
+}

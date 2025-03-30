@@ -1,0 +1,77 @@
+Task 9
+1.Write a program to reverse a given string.
+import java.util.Scanner;
+
+public class ReverseString {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        
+        
+        String reversed = "";
+        for (int i = input.length() - 1; i >= 0; i--) {
+            reversed += input.charAt(i);
+        }
+        
+        
+        System.out.println("Reversed string: " + reversed);
+        
+        scanner.close();
+    }
+}
+
+2.Implement a function to check if a given string is a palindrome.
+public class PalindromeChecker {
+
+    public static boolean isPalindrome(String str) {
+        // Remove spaces and convert the string to lowercase for uniformity
+        str = str.replaceAll("\\s", "").toLowerCase();
+        int left = 0;
+        int right = str.length() - 1;
+
+        // Check characters from both ends
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false; // Not a palindrome
+            }
+            left++;
+            right--;
+        }
+        return true; // It's a palindrome
+    }
+
+    public static void main(String[] args) {
+        String testString = "A man a plan a canal Panama";
+        if (isPalindrome(testString)) {
+            System.out.println("\"" + testString + "\" is a palindrome.");
+        } else {
+            System.out.println("\"" + testString + "\" is not a palindrome.");
+        }
+    }
+}
+
+3.Write a program to count the occurrences of a specific character in a string.
+import java.util.Scanner;
+public class Character {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
+        
+        System.out.print("Enter the character to count: ");
+        char ch = scanner.next().charAt(0);
+
+        int count = 0;
+
+        
+        for (int i = 0; i < input.length(); i++) {
+            if (input.charAt(i) == ch) {
+                count++;
+            }
+        }
+System.out.println("The character '" + ch + "' occurs " + count + " times in the string.");
+    }
+}
